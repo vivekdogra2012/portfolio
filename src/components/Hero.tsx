@@ -37,6 +37,21 @@ export function Hero() {
           animate="visible"
           className="max-w-3xl"
         >
+          <motion.div variants={itemVariants} className="mb-8">
+            <div className="relative inline-block">
+              <div className="w-36 h-36 md:w-44 md:h-44 rounded-full p-1 bg-gradient-to-br from-[var(--color-accent)] to-[var(--color-accent)]/50">
+                <img
+                  src={import.meta.env.BASE_URL + 'vivek-dogra.jpg'}
+                  alt="Vivek Dogra, Frontend Architect"
+                  width={176}
+                  height={176}
+                  fetchPriority="high"
+                  className="w-full h-full rounded-full object-cover bg-[var(--color-surface)]"
+                />
+              </div>
+            </div>
+          </motion.div>
+
           <motion.span variants={itemVariants} className="eyebrow mb-4 block">
             Frontend Architect · Staff FE · 8+ Years
           </motion.span>
