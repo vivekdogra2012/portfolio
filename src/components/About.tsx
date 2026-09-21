@@ -14,7 +14,7 @@ export function About() {
             <div className="flex flex-col md:flex-row gap-8 mb-8">
               <div className="flex-shrink-0">
                 <img
-                  src="/vivek-dogra.jpg"
+                  src={`${import.meta.env.BASE_URL}vivek-dogra.jpg`}
                   alt="Vivek Dogra"
                   className="w-32 h-32 rounded-2xl object-cover"
                   loading="lazy"

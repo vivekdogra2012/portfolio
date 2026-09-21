@@ -40,7 +40,7 @@ export function Hero() {
           <motion.div variants={itemVariants} className="mb-6">
             <div className="w-28 h-28 rounded-full p-1 bg-gradient-to-br from-[#5B8CFF] to-[#5B8CFF]/60">
               <img
-                src="/vivek-dogra.jpg"
+                src={`${import.meta.env.BASE_URL}vivek-dogra.jpg`}
                 alt="Vivek Dogra"
                 className="w-full h-full rounded-full object-cover"
                 fetchPriority="high"
