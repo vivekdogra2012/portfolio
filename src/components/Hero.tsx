@@ -67,7 +67,7 @@ export function Hero() {
                 <img
                   src={`${import.meta.env.BASE_URL}vivek-dogra.jpg`}
                   alt="Vivek Dogra"
-                  className="w-full h-full rounded-full object-cover"
+                  className="w-full h-full rounded-full object-cover object-[center_20%]"
                   fetchPriority="high"
                 />
               </div>

@@ -54,7 +54,7 @@ export function About() {
                     <img
                       src={`${import.meta.env.BASE_URL}vivek-dogra.jpg`}
                       alt="Vivek Dogra"
-                      className="w-full h-full object-cover"
+                      className="w-full h-full object-cover object-[center_20%]"
                       loading="lazy"
                     />
                     
