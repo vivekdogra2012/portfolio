@@ -65,9 +65,9 @@ export function Hero() {
               <div className="absolute inset-0 rounded-full bg-gradient-to-br from-[var(--color-accent)] via-[var(--color-accent-2)] to-[var(--color-accent)] opacity-80 blur-xl group-hover:blur-2xl transition-all duration-500" />
               <div className="relative w-full h-full rounded-full p-[3px] bg-gradient-to-br from-[var(--color-accent)] via-[var(--color-accent-2)] to-[var(--color-accent)]">
                 <img
-                  src={`${import.meta.env.BASE_URL}vivek-dogra.jpg`}
+                  src={`${import.meta.env.BASE_URL}vivek-dogra-suit.jpg`}
                   alt="Vivek Dogra"
-                  className="w-full h-full rounded-full object-cover object-[center_20%]"
+                  className="w-full h-full rounded-full object-cover object-top"
                   fetchPriority="high"
                 />
               </div>

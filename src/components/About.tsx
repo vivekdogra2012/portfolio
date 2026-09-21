@@ -52,9 +52,9 @@ export function About() {
                 >
                   <div className="aspect-[4/5] relative">
                     <img
-                      src={`${import.meta.env.BASE_URL}vivek-dogra.jpg`}
+                      src={`${import.meta.env.BASE_URL}vivek-dogra-suit.jpg`}
                       alt="Vivek Dogra"
-                      className="w-full h-full object-cover object-[center_20%]"
+                      className="w-full h-full object-cover object-top"
                       loading="lazy"
                     />
                     
