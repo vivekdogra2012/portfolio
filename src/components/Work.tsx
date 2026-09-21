@@ -1,4 +1,7 @@
-import { FadeUp } from './FadeUp'
+import { useRef, useState } from 'react'
+import { motion, useInView, AnimatePresence } from 'framer-motion'
+import { SectionReveal } from './SectionReveal'
+import { useReducedMotion } from '../hooks/useReducedMotion'
 
 interface CaseCard {
   company: string
@@ -8,6 +11,7 @@ interface CaseCard {
   description: string
   highlights: string[]
   stack: string[]
+  accentColor: string
 }
 
 const cases: CaseCard[] = [
@@ -25,6 +29,7 @@ const cases: CaseCard[] = [
       'Mentor senior engineers; raise code-review quality org-wide',
     ],
     stack: ['React.js', 'Next.js', 'React Native', 'TypeScript'],
+    accentColor: '#5B8CFF',
   },
   {
     company: 'FanCraze',
@@ -40,6 +45,7 @@ const cases: CaseCard[] = [
       'Built reusable component patterns with Material UI',
     ],
     stack: ['React', 'TypeScript', 'Context API', 'Material UI', 'Framer Motion'],
+    accentColor: '#3DDC97',
   },
   {
     company: 'Junglee Games',
@@ -55,82 +61,209 @@ const cases: CaseCard[] = [
       'Mentored junior engineers; raised review quality and consistency',
     ],
     stack: ['React', 'Redux', 'AngularJS', 'Node.js', 'Tailwind CSS'],
+    accentColor: '#FFE66D',
   },
 ]
 
-export function Work() {
+function TimelineCard({ caseCard, index, isActive, onActivate }: { 
+  caseCard: CaseCard
+  index: number
+  isActive: boolean
+  onActivate: () => void
+}) {
+  const cardRef = useRef<HTMLDivElement>(null)
+  const isInView = useInView(cardRef, { once: true, margin: '-80px' })
+  const reducedMotion = useReducedMotion()
+
   return (
-    <section id="work" className="py-20 md:py-28 bg-[var(--color-surface)]/30">
-      <div className="container-narrow">
-        <FadeUp>
-          <span className="eyebrow mb-4 block">Experience</span>
-          <h2 className="section-title mb-12 md:mb-16">Selected Work</h2>
-        </FadeUp>
+    <motion.div
+      ref={cardRef}
+      className="relative"
+      initial={{ opacity: 0, y: 50 }}
+      animate={isInView ? { opacity: 1, y: 0 } : {}}
+      transition={{ delay: index * 0.15, duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+    >
+      <div className="hidden md:block absolute left-0 top-0 bottom-0 w-px">
+        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[var(--color-border)] to-transparent" />
+        <motion.div 
+          className="absolute top-8 left-1/2 -translate-x-1/2 w-4 h-4 rounded-full border-2 bg-[var(--color-bg)]"
+          style={{ borderColor: caseCard.accentColor }}
+          whileHover={reducedMotion ? {} : { scale: 1.5 }}
+          animate={isActive ? { scale: 1.3, boxShadow: `0 0 20px ${caseCard.accentColor}50` } : {}}
+        />
+        {isActive && (
+          <motion.div
+            className="absolute top-8 left-1/2 -translate-x-1/2 w-4 h-4 rounded-full"
+            style={{ background: caseCard.accentColor }}
+            initial={{ scale: 0, opacity: 0.5 }}
+            animate={{ scale: 3, opacity: 0 }}
+            transition={{ duration: 1.5, repeat: Infinity }}
+          />
+        )}
+      </div>
 
-        <div className="grid gap-8">
-          {cases.map((caseCard, index) => (
-            <FadeUp key={caseCard.company} delay={index * 0.1}>
-              <article className="card p-6 md:p-8">
-                <div className="flex flex-col md:flex-row md:items-start gap-6 md:gap-10">
-                  <div className="md:w-1/3">
-                    <div className="mb-3">
-                      <span className="font-mono text-xs text-[var(--color-accent)]">
-                        {caseCard.period}
-                      </span>
-                    </div>
-                    <h3 className="text-xl font-semibold text-[var(--color-text)] mb-1">
-                      {caseCard.company}
-                    </h3>
-                    <p className="text-sm text-[var(--color-muted)]">
-                      {caseCard.role}
-                    </p>
-                  </div>
+      <div className="md:pl-12">
+        <motion.article 
+          className="relative group cursor-pointer"
+          onClick={onActivate}
+          onKeyDown={(e) => e.key === 'Enter' && onActivate()}
+          tabIndex={0}
+          role="button"
+          whileHover={reducedMotion ? {} : { x: 8 }}
+          transition={{ duration: 0.3 }}
+        >
+          <div 
+            className="absolute -inset-px rounded-2xl opacity-0 group-hover:opacity-100 transition-all duration-500"
+            style={{
+              background: `linear-gradient(135deg, ${caseCard.accentColor}20, transparent 60%)`,
+            }}
+          />
+          
+          <div className="relative rounded-2xl bg-[var(--color-surface)]/60 backdrop-blur-sm border border-[var(--color-border)] overflow-hidden transition-all duration-300 group-hover:border-opacity-50"
+            style={{ borderColor: isActive ? caseCard.accentColor : undefined }}
+          >
+            <div className="p-6 md:p-8">
+              <div className="flex flex-col lg:flex-row lg:items-start gap-6 lg:gap-10">
+                <div className="lg:w-1/3">
+                  <motion.div
+                    className="inline-flex px-3 py-1.5 rounded-full text-xs font-mono mb-4"
+                    style={{ 
+                      background: `${caseCard.accentColor}15`,
+                      color: caseCard.accentColor,
+                      border: `1px solid ${caseCard.accentColor}30`,
+                    }}
+                  >
+                    {caseCard.period}
+                  </motion.div>
+                  <h3 className="text-2xl font-bold text-[var(--color-text)] mb-2 group-hover:text-[var(--color-accent)] transition-colors">
+                    {caseCard.company}
+                  </h3>
+                  <p className="text-sm text-[var(--color-muted)] font-medium">
+                    {caseCard.role}
+                  </p>
+                </div>
 
-                  <div className="md:w-2/3">
-                    <h4 className="text-lg font-medium text-[var(--color-text)] mb-3">
-                      {caseCard.headline}
-                    </h4>
-                    <p className="text-[var(--color-muted)] mb-5 leading-relaxed">
-                      {caseCard.description}
-                    </p>
+                <div className="lg:w-2/3">
+                  <h4 className="text-lg font-semibold text-[var(--color-text)] mb-3">
+                    {caseCard.headline}
+                  </h4>
+                  <p className="text-[var(--color-muted)] mb-5 leading-relaxed">
+                    {caseCard.description}
+                  </p>
 
-                    <ul className="space-y-2 mb-5">
-                      {caseCard.highlights.map((highlight) => (
-                        <li
-                          key={highlight}
-                          className="flex items-start gap-2 text-sm text-[var(--color-muted)]"
-                        >
-                          <span className="text-[var(--color-accent-2)] mt-1.5 flex-shrink-0">
-                            <svg
-                              width="12"
-                              height="12"
-                              viewBox="0 0 24 24"
-                              fill="none"
-                              stroke="currentColor"
-                              strokeWidth="3"
+                  <AnimatePresence>
+                    {isActive && (
+                      <motion.div
+                        initial={{ height: 0, opacity: 0 }}
+                        animate={{ height: 'auto', opacity: 1 }}
+                        exit={{ height: 0, opacity: 0 }}
+                        transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+                        className="overflow-hidden"
+                      >
+                        <ul className="space-y-3 mb-6 pt-4 border-t border-[var(--color-border)]/50">
+                          {caseCard.highlights.map((highlight, i) => (
+                            <motion.li
+                              key={highlight}
+                              className="flex items-start gap-3 text-sm text-[var(--color-muted)]"
+                              initial={{ opacity: 0, x: -10 }}
+                              animate={{ opacity: 1, x: 0 }}
+                              transition={{ delay: i * 0.1 }}
                             >
-                              <polyline points="20 6 9 17 4 12" />
-                            </svg>
-                          </span>
-                          {highlight}
-                        </li>
-                      ))}
-                    </ul>
+                              <span 
+                                className="mt-1.5 flex-shrink-0 w-1.5 h-1.5 rounded-full"
+                                style={{ background: caseCard.accentColor }}
+                              />
+                              {highlight}
+                            </motion.li>
+                          ))}
+                        </ul>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
 
-                    <div className="flex flex-wrap gap-2">
-                      {caseCard.stack.map((tech) => (
-                        <span
-                          key={tech}
-                          className="text-xs font-mono px-2 py-1 rounded bg-[var(--color-bg)] text-[var(--color-muted)] border border-[var(--color-border)]"
-                        >
-                          {tech}
-                        </span>
-                      ))}
-                    </div>
+                  <div className="flex flex-wrap gap-2">
+                    {caseCard.stack.map((tech, i) => (
+                      <motion.span
+                        key={tech}
+                        className="text-xs font-mono px-3 py-1.5 rounded-lg bg-[var(--color-bg)]/80 text-[var(--color-muted)] border border-[var(--color-border)]/50"
+                        initial={{ opacity: 0, scale: 0.9 }}
+                        animate={isInView ? { opacity: 1, scale: 1 } : {}}
+                        transition={{ delay: 0.3 + i * 0.05 }}
+                        whileHover={reducedMotion ? {} : { 
+                          scale: 1.05, 
+                          borderColor: caseCard.accentColor,
+                          color: caseCard.accentColor,
+                        }}
+                      >
+                        {tech}
+                      </motion.span>
+                    ))}
                   </div>
                 </div>
-              </article>
-            </FadeUp>
+              </div>
+            </div>
+
+            <motion.div
+              className="h-1"
+              style={{ 
+                background: `linear-gradient(90deg, ${caseCard.accentColor}, ${caseCard.accentColor}50, transparent)`,
+                transformOrigin: 'left',
+              }}
+              initial={{ scaleX: 0 }}
+              animate={{ scaleX: isActive ? 1 : 0 }}
+              transition={{ duration: 0.5 }}
+            />
+          </div>
+        </motion.article>
+      </div>
+    </motion.div>
+  )
+}
+
+export function Work() {
+  const [activeIndex, setActiveIndex] = useState(0)
+  const sectionRef = useRef<HTMLElement>(null)
+  const isInView = useInView(sectionRef, { once: true, margin: '-100px' })
+
+  return (
+    <section id="work" ref={sectionRef} className="py-24 md:py-32 bg-gradient-to-b from-[var(--color-surface)]/30 via-[var(--color-surface)]/50 to-[var(--color-surface)]/30 relative overflow-hidden">
+      <div className="absolute inset-0 -z-10">
+        <div className="absolute top-0 left-1/4 w-[500px] h-[500px] bg-[var(--color-accent)]/3 rounded-full blur-[100px]" />
+        <div className="absolute bottom-0 right-1/4 w-[500px] h-[500px] bg-[var(--color-accent-2)]/3 rounded-full blur-[100px]" />
+      </div>
+
+      <div className="container-narrow">
+        <SectionReveal className="mb-16">
+          <div className="flex items-end gap-4 mb-4">
+            <span className="eyebrow">Experience</span>
+            <motion.div 
+              className="flex-1 h-px bg-gradient-to-r from-[var(--color-accent)]/50 to-transparent"
+              initial={{ scaleX: 0 }}
+              animate={isInView ? { scaleX: 1 } : { scaleX: 0 }}
+              transition={{ delay: 0.3, duration: 0.8 }}
+              style={{ transformOrigin: 'left' }}
+            />
+          </div>
+          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight">
+            Selected{' '}
+            <span className="bg-gradient-to-r from-[var(--color-accent)] to-[var(--color-accent-2)] bg-clip-text text-transparent">
+              Work
+            </span>
+          </h2>
+          <p className="mt-4 text-lg text-[var(--color-muted)] max-w-2xl">
+            A timeline of impactful roles where I've shaped frontend architecture and delivery.
+          </p>
+        </SectionReveal>
+
+        <div className="space-y-8">
+          {cases.map((caseCard, index) => (
+            <TimelineCard
+              key={caseCard.company}
+              caseCard={caseCard}
+              index={index}
+              isActive={activeIndex === index}
+              onActivate={() => setActiveIndex(index)}
+            />
           ))}
         </div>
       </div>
