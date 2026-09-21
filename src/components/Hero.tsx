@@ -90,7 +90,7 @@ export function Hero() {
           </motion.div>
 
           <motion.div variants={itemVariants}>
-            <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold tracking-tight leading-[0.95] mb-6">
+            <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold tracking-tight leading-[1.05] mb-6">
               <TextReveal as="span" className="block" delay={0.1}>
                 <span className="bg-gradient-to-r from-[var(--color-text)] via-[var(--color-text)] to-[var(--color-muted)] bg-clip-text text-transparent">
                   Vivek Dogra

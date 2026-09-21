@@ -29,7 +29,7 @@ export function TextReveal({ children, className = '', delay = 0, as = 'div' }: 
   const Component = motion[as]
 
   return (
-    <div ref={ref} className="overflow-hidden">
+    <div ref={ref} className="overflow-hidden pb-[0.15em] pt-[0.05em]">
       <Component
         className={className}
         initial="hidden"
@@ -74,7 +74,7 @@ export function SplitTextReveal({ text, className = '', delay = 0, stagger = 0.0
   return (
     <span ref={ref} className={`inline ${className}`}>
       {words.map((word, i) => (
-        <span key={i} className="inline-block overflow-hidden mr-[0.25em]">
+        <span key={i} className="inline-block overflow-hidden pb-[0.1em] pt-[0.05em] mr-[0.25em]">
           <motion.span
             className="inline-block"
             initial={{ y: '100%', opacity: 0 }}
