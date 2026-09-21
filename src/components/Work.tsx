@@ -43,7 +43,7 @@ const cases: CaseCard[] = [
   },
   {
     company: 'Junglee Games',
-    role: 'SDE-2 → SDE-1',
+    role: 'SDE-1 → SDE-2',
     period: 'Feb 2018 – Jun 2024',
     headline: 'Ownership ladder on consumer gaming',
     description:

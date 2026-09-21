@@ -11,13 +11,25 @@ export function About() {
           </FadeUp>
 
           <FadeUp delay={0.1}>
-            <div className="prose prose-invert max-w-none">
-              <p className="text-lg text-[var(--color-muted)] leading-relaxed mb-6">
-                I'm Vivek Dogra — a Frontend Architect with 8+ years building consumer-scale 
-                web and mobile UI. I'm currently Architect-1 at Infinity Learn, where I own 
-                frontend architecture across our React and React Native surfaces.
-              </p>
+            <div className="flex flex-col md:flex-row gap-8 mb-8">
+              <div className="flex-shrink-0">
+                <img
+                  src="/vivek-dogra.jpg"
+                  alt="Vivek Dogra"
+                  className="w-32 h-32 rounded-2xl object-cover"
+                  loading="lazy"
+                />
+              </div>
+              <div className="prose prose-invert max-w-none">
+                <p className="text-lg text-[var(--color-muted)] leading-relaxed">
+                  I'm Vivek Dogra — a Frontend Architect with 8+ years building consumer-scale 
+                  web and mobile UI. I'm currently Architect-1 at Infinity Learn, where I own 
+                  frontend architecture across our React and React Native surfaces.
+                </p>
+              </div>
+            </div>
 
+            <div className="prose prose-invert max-w-none">
               <p className="text-[var(--color-muted)] leading-relaxed mb-6">
                 My work sits at the intersection of platform thinking and hands-on delivery. 
                 I led the migration from AngularJS + Kotlin to React + React Native — not as 

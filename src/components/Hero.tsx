@@ -37,6 +37,17 @@ export function Hero() {
           animate="visible"
           className="max-w-3xl"
         >
+          <motion.div variants={itemVariants} className="mb-6">
+            <div className="w-28 h-28 rounded-full p-1 bg-gradient-to-br from-[#5B8CFF] to-[#5B8CFF]/60">
+              <img
+                src="/vivek-dogra.jpg"
+                alt="Vivek Dogra"
+                className="w-full h-full rounded-full object-cover"
+                fetchPriority="high"
+              />
+            </div>
+          </motion.div>
+
           <motion.span variants={itemVariants} className="eyebrow mb-4 block">
             Frontend Architect · Staff FE · 8+ Years
           </motion.span>
