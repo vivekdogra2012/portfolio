@@ -8,7 +8,7 @@ const HeroBackground = lazy(() =>
 
 function StaticBackground() {
   return (
-    <div className="absolute inset-0 -z-10">
+    <div className="fixed inset-0 -z-10 w-screen h-screen" style={{ backgroundColor: 'var(--color-bg)' }}>
       <div 
         className="absolute inset-0"
         style={{
