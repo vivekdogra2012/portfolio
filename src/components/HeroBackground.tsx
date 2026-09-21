@@ -172,7 +172,7 @@ export function HeroBackground() {
 
   if (reducedMotion) {
     return (
-      <div className="absolute inset-0 -z-10">
+      <div className="fixed inset-0 -z-10 w-screen h-screen" style={{ backgroundColor: 'var(--color-bg)' }}>
         <div 
           className="absolute inset-0"
           style={{
@@ -184,17 +184,24 @@ export function HeroBackground() {
   }
 
   return (
-    <div ref={containerRef} className="absolute inset-0 -z-10">
+    <div ref={containerRef} className="fixed inset-0 -z-10 w-screen h-screen" style={{ backgroundColor: 'var(--color-bg)' }}>
       {isVisible && (
         <Canvas
           camera={{ position: [0, 0, 5], fov: 60 }}
           dpr={[1, 1.5]}
           gl={{ 
             antialias: false,
-            alpha: true,
+            alpha: false,
             powerPreference: 'high-performance',
           }}
-          style={{ background: 'transparent' }}
+          style={{ 
+            background: 'var(--color-bg)',
+            width: '100%',
+            height: '100%',
+          }}
+          onCreated={({ gl }) => {
+            gl.setClearColor(0x0B0F14, 1)
+          }}
         >
           <Scene />
         </Canvas>
