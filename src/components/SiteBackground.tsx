@@ -1,0 +1,52 @@
+import { useEffect, useRef } from 'react'
+import { useReducedMotion } from '../hooks/useReducedMotion'
+
+export function SiteBackground() {
+  const glowRef = useRef<HTMLDivElement>(null)
+  const reduced = useReducedMotion()
+
+  useEffect(() => {
+    if (reduced) return
+    const glow = glowRef.current
+    if (!glow) return
+
+    const onMove = (event: PointerEvent) => {
+      const x = (event.clientX / window.innerWidth - 0.5) * 28
+      const y = (event.clientY / window.innerHeight - 0.5) * 20
+      glow.style.transform = `translate3d(${x}px, ${y}px, 0)`
+    }
+
+    window.addEventListener('pointermove', onMove, { passive: true })
+    return () => window.removeEventListener('pointermove', onMove)
+  }, [reduced])
+
+  return (
+    <div className="pointer-events-none fixed inset-0 z-0" aria-hidden>
+      <div className="absolute inset-0 bg-[var(--color-bg)]" />
+      <div
+        ref={glowRef}
+        className="absolute -inset-16 transition-transform duration-700 ease-out"
+        style={{
+          background:
+            'radial-gradient(ellipse 42% 36% at 72% 18%, rgba(139,92,246,0.18), transparent 68%), radial-gradient(ellipse 36% 32% at 18% 86%, rgba(70,70,110,0.16), transparent 70%)',
+        }}
+      />
+      <div
+        className="absolute inset-0 opacity-60"
+        style={{
+          backgroundImage:
+            'linear-gradient(to right, rgba(255,255,255,0.045) 1px, transparent 1px), linear-gradient(to bottom, rgba(255,255,255,0.045) 1px, transparent 1px)',
+          backgroundSize: '80px 80px',
+          maskImage: 'radial-gradient(ellipse at 50% 30%, black 10%, transparent 72%)',
+        }}
+      />
+      <div
+        className="absolute inset-0 opacity-[0.18]"
+        style={{
+          backgroundImage: 'radial-gradient(rgba(255,255,255,0.55) 0.6px, transparent 0.6px)',
+          backgroundSize: '3px 3px',
+        }}
+      />
+    </div>
+  )
+}

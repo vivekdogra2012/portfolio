@@ -1,44 +1,34 @@
-import { useState, useCallback } from 'react'
-import { Nav } from './components/Nav'
-import { Hero } from './components/Hero'
-import { Skills } from './components/Skills'
-import { Work } from './components/Work'
-import { Architecture } from './components/Architecture'
 import { About } from './components/About'
 import { Contact } from './components/Contact'
-import { Footer } from './components/Footer'
-import { Preloader } from './components/Preloader'
 import { CustomCursor } from './components/CustomCursor'
-import { GrainOverlay } from './components/GrainOverlay'
-import { ScrollProgress } from './components/ScrollProgress'
-import { useLenis } from './hooks/useLenis'
+import { Experience } from './components/Experience'
+import { Expertise } from './components/Expertise'
+import { Footer } from './components/Footer'
+import { Hero } from './components/Hero'
+import { Nav } from './components/Nav'
+import { SiteBackground } from './components/SiteBackground'
+import { Stack } from './components/Stack'
+import { Thinking } from './components/Thinking'
+import { Work } from './components/Work'
 
 export default function App() {
-  const [isLoading, setIsLoading] = useState(true)
-  
-  useLenis()
-  
-  const handlePreloaderComplete = useCallback(() => {
-    setIsLoading(false)
-  }, [])
-
   return (
     <>
-      {isLoading && <Preloader onComplete={handlePreloaderComplete} />}
-      
-      <div 
-        className={`min-h-screen transition-opacity duration-500 ${isLoading ? 'opacity-0' : 'opacity-100'}`}
-      >
+      <a href="#top" className="skip-link">
+        Skip to content
+      </a>
+      <SiteBackground />
+      <div className="relative z-10">
         <CustomCursor />
-        <GrainOverlay />
-        <ScrollProgress />
         <Nav />
         <main>
           <Hero />
-          <Skills />
-          <Work />
-          <Architecture />
           <About />
+          <Work />
+          <Experience />
+          <Expertise />
+          <Stack />
+          <Thinking />
           <Contact />
         </main>
         <Footer />
