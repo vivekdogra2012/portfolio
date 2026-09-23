@@ -1,159 +1,128 @@
-import { useState, useEffect } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
-import { MagneticButton } from './MagneticButton'
+import { useEffect, useState } from 'react'
+import { AnimatePresence, motion } from 'framer-motion'
+import { profile } from '../content'
 
-const navLinks = [
-  { href: '#skills', label: 'Skills' },
+const links = [
   { href: '#work', label: 'Work' },
-  { href: '#architecture', label: 'Architecture' },
+  { href: '#experience', label: 'Experience' },
+  { href: '#expertise', label: 'Expertise' },
   { href: '#about', label: 'About' },
   { href: '#contact', label: 'Contact' },
 ]
 
 export function Nav() {
   const [scrolled, setScrolled] = useState(false)
-  const [mobileOpen, setMobileOpen] = useState(false)
-  const [activeSection, setActiveSection] = useState('')
+  const [open, setOpen] = useState(false)
 
   useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 50)
-
-      const sections = navLinks.map(link => link.href.slice(1))
-      const scrollPosition = window.scrollY + 200
-
-      for (const section of sections.reverse()) {
-        const element = document.getElementById(section)
-        if (element && scrollPosition >= element.offsetTop) {
-          setActiveSection(section)
-          break
-        }
-      }
-    }
-
-    window.addEventListener('scroll', handleScroll, { passive: true })
-    return () => window.removeEventListener('scroll', handleScroll)
+    const onScroll = () => setScrolled(window.scrollY > 24)
+    onScroll()
+    window.addEventListener('scroll', onScroll, { passive: true })
+    return () => window.removeEventListener('scroll', onScroll)
   }, [])
 
-  return (
-    <motion.nav
-      initial={{ y: -20, opacity: 0 }}
-      animate={{ y: 0, opacity: 1 }}
-      transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
-        scrolled
-          ? 'bg-[var(--color-bg)]/80 backdrop-blur-xl border-b border-[var(--color-border)]/50'
-          : 'bg-transparent'
-      }`}
-    >
-      <div className="container-narrow">
-        <div className="flex items-center justify-between h-16 md:h-20">
-          <MagneticButton
-            as="a"
-            href="#"
-            className="relative group"
-            strength={0.15}
-          >
-            <span className="font-bold text-xl tracking-tight text-[var(--color-text)] group-hover:text-[var(--color-accent)] transition-colors duration-300">
-              VD
-            </span>
-            <motion.span
-              className="absolute -bottom-1 left-0 right-0 h-0.5 bg-gradient-to-r from-[var(--color-accent)] to-[var(--color-accent-2)]"
-              initial={{ scaleX: 0 }}
-              whileHover={{ scaleX: 1 }}
-              transition={{ duration: 0.3 }}
-              style={{ transformOrigin: 'left' }}
-            />
-          </MagneticButton>
+  useEffect(() => {
+    if (!open) return
+    const onKey = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') setOpen(false)
+    }
+    document.addEventListener('keydown', onKey)
+    document.body.style.overflow = 'hidden'
+    return () => {
+      document.removeEventListener('keydown', onKey)
+      document.body.style.overflow = ''
+    }
+  }, [open])
 
-          <div className="hidden md:flex items-center gap-1">
-            {navLinks.map((link) => {
-              const isActive = activeSection === link.href.slice(1)
-              return (
-                <a
-                  key={link.href}
-                  href={link.href}
-                  className={`relative px-4 py-2 text-sm font-medium transition-colors duration-300 ${
-                    isActive 
-                      ? 'text-[var(--color-accent)]' 
-                      : 'text-[var(--color-muted)] hover:text-[var(--color-text)]'
-                  }`}
-                >
-                  {link.label}
-                  {isActive && (
-                    <motion.span
-                      layoutId="activeSection"
-                      className="absolute bottom-0 left-2 right-2 h-0.5 bg-gradient-to-r from-[var(--color-accent)] to-[var(--color-accent-2)]"
-                      transition={{ type: 'spring', stiffness: 380, damping: 30 }}
-                    />
-                  )}
-                </a>
-              )
-            })}
-          </div>
+  return (
+    <>
+      <header
+        className={`fixed inset-x-0 top-0 z-50 transition-colors duration-300 ${
+          scrolled || open ? 'bg-[var(--color-bg)]/80 backdrop-blur-xl' : 'bg-transparent'
+        }`}
+      >
+        <div className="shell flex h-16 items-center justify-between md:h-[4.5rem]">
+          <a href="#top" className="text-[0.78rem] font-semibold tracking-[0.18em]">
+            VIVEK DOGRA
+          </a>
+
+          <nav className="hidden items-center gap-7 lg:flex" aria-label="Primary">
+            {links.map((link) => (
+              <a
+                key={link.href}
+                href={link.href}
+                className="text-[0.72rem] font-medium tracking-[0.16em] text-[var(--color-muted)] uppercase transition-colors hover:text-[var(--color-text)]"
+              >
+                {link.label}
+              </a>
+            ))}
+          </nav>
+
+          <a href="#contact" className="btn-quiet hidden lg:inline-flex">
+            Let’s talk
+            <Arrow />
+          </a>
 
           <button
-            onClick={() => setMobileOpen(!mobileOpen)}
-            className="md:hidden relative w-10 h-10 flex items-center justify-center text-[var(--color-muted)] hover:text-[var(--color-text)] transition-colors"
-            aria-label="Toggle menu"
-            aria-expanded={mobileOpen}
+            type="button"
+            className="inline-flex h-10 w-10 items-center justify-center lg:hidden"
+            aria-expanded={open}
+            aria-controls="mobile-nav"
+            aria-label={open ? 'Close menu' : 'Open menu'}
+            onClick={() => setOpen((value) => !value)}
           >
-            <div className="relative w-5 h-4">
-              <motion.span
-                className="absolute left-0 w-full h-0.5 bg-current"
-                animate={{
-                  top: mobileOpen ? '50%' : '0%',
-                  rotate: mobileOpen ? 45 : 0,
-                  y: mobileOpen ? '-50%' : 0,
-                }}
-                transition={{ duration: 0.3 }}
-              />
-              <motion.span
-                className="absolute top-1/2 left-0 w-full h-0.5 bg-current -translate-y-1/2"
-                animate={{ opacity: mobileOpen ? 0 : 1, scaleX: mobileOpen ? 0 : 1 }}
-                transition={{ duration: 0.2 }}
-              />
-              <motion.span
-                className="absolute left-0 w-full h-0.5 bg-current"
-                animate={{
-                  bottom: mobileOpen ? '50%' : '0%',
-                  rotate: mobileOpen ? -45 : 0,
-                  y: mobileOpen ? '50%' : 0,
-                }}
-                transition={{ duration: 0.3 }}
-              />
-            </div>
+            <span className="relative block h-3 w-5">
+              <span className={`absolute left-0 h-px w-5 bg-white transition ${open ? 'top-1.5 rotate-45' : 'top-0'}`} />
+              <span className={`absolute left-0 top-1.5 h-px w-5 bg-white transition ${open ? 'opacity-0' : ''}`} />
+              <span className={`absolute left-0 h-px w-5 bg-white transition ${open ? 'top-1.5 -rotate-45' : 'top-3'}`} />
+            </span>
           </button>
         </div>
+      </header>
 
-        <AnimatePresence>
-          {mobileOpen && (
-            <motion.div
-              initial={{ opacity: 0, height: 0 }}
-              animate={{ opacity: 1, height: 'auto' }}
-              exit={{ opacity: 0, height: 0 }}
-              transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
-              className="md:hidden overflow-hidden border-t border-[var(--color-border)]/50"
-            >
-              <div className="py-4 space-y-1">
-                {navLinks.map((link, index) => (
-                  <motion.a
-                    key={link.href}
+      <AnimatePresence>
+        {open && (
+          <motion.nav
+            id="mobile-nav"
+            className="fixed inset-0 z-40 flex flex-col justify-end bg-[var(--color-bg)] px-6 pb-16 pt-24 lg:hidden"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            aria-label="Mobile"
+          >
+            <ul className="space-y-2">
+              {links.map((link, index) => (
+                <motion.li
+                  key={link.href}
+                  initial={{ opacity: 0, y: 16 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.05 * index }}
+                >
+                  <a
                     href={link.href}
-                    onClick={() => setMobileOpen(false)}
-                    className="block px-4 py-3 text-lg text-[var(--color-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-surface)]/50 rounded-lg transition-all"
-                    initial={{ opacity: 0, x: -20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: index * 0.05 }}
+                    className="block py-2 text-4xl font-semibold tracking-tight"
+                    onClick={() => setOpen(false)}
                   >
                     {link.label}
-                  </motion.a>
-                ))}
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
-      </div>
-    </motion.nav>
+                  </a>
+                </motion.li>
+              ))}
+            </ul>
+            <a href={`mailto:${profile.email}`} className="btn-quiet mt-10" onClick={() => setOpen(false)}>
+              {profile.email}
+              <Arrow />
+            </a>
+          </motion.nav>
+        )}
+      </AnimatePresence>
+    </>
+  )
+}
+
+function Arrow() {
+  return (
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" aria-hidden>
+      <path d="M5 12h14M13 6l6 6-6 6" />
+    </svg>
   )
 }
