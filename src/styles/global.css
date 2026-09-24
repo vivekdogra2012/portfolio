@@ -153,8 +153,29 @@
     animation: draw 0.7s cubic-bezier(0.22, 1, 0.36, 1) forwards;
   }
 
+  .intro-name {
+    display: none;
+  }
+
   html.play-intro .intro-name {
-    animation: fade-up 0.55s cubic-bezier(0.22, 1, 0.36, 1) both;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    z-index: 95;
+    display: block;
+    translate: -50% -50%;
+    font-size: clamp(1rem, 2.4vw, 1.35rem);
+    letter-spacing: 0.34em;
+    pointer-events: none;
+  }
+
+  .intro-name > span {
+    display: block;
+    opacity: 0;
+  }
+
+  html.play-intro .intro-name > span {
+    animation: intro-name 1.65s cubic-bezier(0.22, 1, 0.36, 1) 0.08s both;
   }
 
   .orb-drift {
@@ -441,6 +462,33 @@
     }
     to {
       transform: scaleX(1);
+    }
+  }
+
+  @keyframes intro-name {
+    0% {
+      opacity: 0;
+      filter: blur(12px);
+      transform: translateY(18px);
+      letter-spacing: 0.62em;
+    }
+    38% {
+      opacity: 1;
+      filter: blur(0);
+      transform: translateY(0);
+      letter-spacing: 0.34em;
+    }
+    58% {
+      opacity: 1;
+      filter: blur(0);
+      transform: translateY(0);
+      letter-spacing: 0.34em;
+    }
+    100% {
+      opacity: 0;
+      filter: blur(10px);
+      transform: translateY(-16px);
+      letter-spacing: 0.48em;
     }
   }
 
