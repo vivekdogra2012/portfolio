@@ -232,11 +232,6 @@ if (cursor && dot && finePointer.matches && !reduced) {
 }
 
 function finishIntro() {
-  try {
-    sessionStorage.setItem('vd-intro', '1')
-  } catch {
-    /* private mode */
-  }
   document.documentElement.classList.remove('play-intro', 'booting')
   lenis?.start()
 }
@@ -245,10 +240,15 @@ const intro = document.querySelector<HTMLElement>('.intro')
 if (document.documentElement.classList.contains('play-intro')) {
   lenis?.stop()
   intro?.addEventListener('animationend', (event) => {
-    if (event.target === intro) finishIntro()
+    if (event.target !== intro) return
+    const name = event.animationName
+    if (name && name !== 'curtain') return
+    finishIntro()
   })
   intro?.addEventListener('click', finishIntro)
-  const running = intro?.getAnimations().some((animation) => animation.playState === 'finished')
-  if (running) finishIntro()
+  const curtain = intro?.getAnimations().find((animation) => {
+    return animation instanceof CSSAnimation && animation.animationName === 'curtain'
+  })
+  if (curtain?.playState === 'finished') finishIntro()
 }
 document.documentElement.classList.remove('booting')

@@ -80,8 +80,6 @@ const jsonLd = {
       (function () {
         try {
           if (matchMedia('(prefers-reduced-motion: reduce)').matches) return
-          if (location.hash) return
-          if (sessionStorage.getItem('vd-intro') === '1') return
           document.documentElement.classList.add('play-intro', 'booting')
           setTimeout(function () {
             document.documentElement.classList.remove('booting')
