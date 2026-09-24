@@ -1,5 +1,7 @@
-import { useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
+import { useLenis } from 'lenis/react'
+import type Lenis from 'lenis'
 import { profile } from '../content'
 import { usePageProgress } from '../hooks/useLeaveProgress'
 import { useReducedMotion } from '../hooks/useReducedMotion'
@@ -30,20 +32,21 @@ export function Nav() {
     return () => window.removeEventListener('anchor-scroll', show)
   }, [])
 
-  useEffect(() => {
-    let last = window.scrollY
-    const onScroll = () => {
-      const y = window.scrollY
+  const onLenis = useCallback(
+    (lenis: Lenis) => {
+      const y = lenis.animatedScroll
       setScrolled(y > 24)
-      if (open || y < 80 || performance.now() < revealLock.current) setHidden(false)
-      else if (y > last + 8) setHidden(true)
-      else if (y < last - 8) setHidden(false)
-      last = y
-    }
-    onScroll()
-    window.addEventListener('scroll', onScroll, { passive: true })
-    return () => window.removeEventListener('scroll', onScroll)
-  }, [open])
+      if (open || y < 80 || performance.now() < revealLock.current) {
+        setHidden(false)
+        return
+      }
+      if (lenis.direction === 1 && lenis.velocity > 0.4) setHidden(true)
+      else if (lenis.direction === -1 && lenis.velocity < -0.4) setHidden(false)
+    },
+    [open],
+  )
+
+  useLenis(onLenis, [open])
 
   useEffect(() => {
     if (!open) return

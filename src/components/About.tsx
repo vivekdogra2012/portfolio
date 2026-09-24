@@ -1,5 +1,6 @@
-import { motion } from 'framer-motion'
+import { motion, useTransform } from 'framer-motion'
 import { about } from '../content'
+import { useLeaveProgress } from '../hooks/useLeaveProgress'
 import { useInView } from '../hooks/useInView'
 import { Reveal } from './Reveal'
 import { useReducedMotion } from '../hooks/useReducedMotion'
@@ -9,6 +10,8 @@ export function About() {
   const reduced = useReducedMotion()
   const [photoRef, seen] = useInView<HTMLDivElement>({ threshold: 0.2 })
   const play = seen && !reduced
+  const travel = useLeaveProgress(photoRef)
+  const drift = useTransform(travel, [0, 1], [28, -28])
 
   return (
     <section id="about" className="section-space scroll-mt-24">
@@ -29,6 +32,7 @@ export function About() {
             <div ref={photoRef} className="relative aspect-[4/5] overflow-hidden border border-[var(--color-line)]">
               <motion.div
                 className="h-full w-full"
+                style={reduced ? undefined : { y: drift }}
                 initial={reduced ? false : { clipPath: 'inset(100% 0% 0% 0%)' }}
                 animate={play || reduced ? { clipPath: 'inset(0% 0% 0% 0%)' } : undefined}
                 transition={{ duration: 1.15, ease: easeOut }}

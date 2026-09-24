@@ -1,5 +1,6 @@
 import { useState, type PointerEvent } from 'react'
 import { AnimatePresence, motion, useMotionTemplate, useMotionValue, useSpring, useTransform } from 'framer-motion'
+import { useLeaveProgress } from '../hooks/useLeaveProgress'
 import { roles, type Role } from '../content'
 import { useInView } from '../hooks/useInView'
 import { Reveal } from './Reveal'
@@ -130,6 +131,8 @@ function Frame({ kind, className }: { kind: number; className: string }) {
   const reduced = useReducedMotion()
   const [viewRef, seen] = useInView<HTMLDivElement>({ threshold: 0.28 })
   const play = seen && !reduced
+  const travel = useLeaveProgress(viewRef)
+  const drift = useTransform(travel, [0, 1], [36, -36])
   const px = useMotionValue(0)
   const py = useMotionValue(0)
   const sx = useSpring(px, { stiffness: 140, damping: 18 })
@@ -156,7 +159,7 @@ function Frame({ kind, className }: { kind: number; className: string }) {
   }
 
   return (
-    <div
+    <motion.div
       ref={viewRef}
       className={`relative overflow-hidden border border-[var(--color-line)] bg-[#0c0c10] ${className}`}
       style={{ perspective: 900 }}
@@ -165,6 +168,7 @@ function Frame({ kind, className }: { kind: number; className: string }) {
     >
       <motion.div
         className="absolute inset-0"
+        style={reduced ? undefined : { y: drift }}
         initial={reduced ? false : { clipPath: 'inset(100% 0% 0% 0%)' }}
         animate={play || reduced ? { clipPath: 'inset(0% 0% 0% 0%)' } : undefined}
         transition={{ duration: 1.05, ease: easeOut }}
@@ -179,7 +183,7 @@ function Frame({ kind, className }: { kind: number; className: string }) {
           {!reduced && <motion.div className="absolute inset-0" style={{ background: shine }} />}
         </motion.div>
       </motion.div>
-    </div>
+    </motion.div>
   )
 }
 

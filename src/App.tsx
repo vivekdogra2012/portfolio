@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import { getLenis, useLenis } from './hooks/useLenis'
+import { ReactLenis, useLenis } from 'lenis/react'
 import { About } from './components/About'
 import { Intro } from './components/Intro'
 import { Contact } from './components/Contact'
@@ -14,10 +14,29 @@ import { Stack } from './components/Stack'
 import { Thinking } from './components/Thinking'
 import { Work } from './components/Work'
 
+const lenisOptions = {
+  duration: 1.15,
+  easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+  orientation: 'vertical' as const,
+  gestureOrientation: 'vertical' as const,
+  smoothWheel: true,
+  touchMultiplier: 1.4,
+}
+
 export default function App() {
-  useLenis()
+  return (
+    <ReactLenis root options={lenisOptions}>
+      <Shell />
+    </ReactLenis>
+  )
+}
+
+function Shell() {
+  const lenis = useLenis()
 
   useEffect(() => {
+    if (!lenis) return
+
     const onClick = (event: MouseEvent) => {
       if (event.defaultPrevented || event.button !== 0) return
       if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return
@@ -26,8 +45,7 @@ export default function App() {
       const hash = anchor.getAttribute('href')
       if (!hash || hash.length < 2) return
       const target = document.querySelector(hash)
-      const lenis = getLenis()
-      if (!(target instanceof HTMLElement) || !lenis) return
+      if (!(target instanceof HTMLElement)) return
       event.preventDefault()
       lenis.scrollTo(target, { offset: -8 })
       history.pushState(null, '', hash)
@@ -36,7 +54,7 @@ export default function App() {
 
     document.addEventListener('click', onClick)
     return () => document.removeEventListener('click', onClick)
-  }, [])
+  }, [lenis])
 
   return (
     <>
