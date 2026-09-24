@@ -84,8 +84,8 @@ export const expertise = [
   },
   {
     index: '02',
-    title: 'React & Next.js',
-    detail: 'TypeScript-first product UI, from consumer web surfaces to the structure underneath them.',
+    title: 'React, Next.js & Astro',
+    detail: 'TypeScript-first product UI, from consumer web surfaces to content-first Astro sites that ship as HTML.',
   },
   {
     index: '03',
@@ -124,6 +124,7 @@ export const stack = [
   { name: 'JavaScript', group: 'Language' },
   { name: 'React', group: 'UI' },
   { name: 'Next.js', group: 'UI' },
+  { name: 'Astro', group: 'UI' },
   { name: 'React Native', group: 'Mobile' },
   { name: 'Redux', group: 'State' },
   { name: 'Context API', group: 'State' },
