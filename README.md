@@ -1,90 +1,52 @@
 # Vivek Dogra — Frontend Architect Portfolio
 
-A personal portfolio site built with React, TypeScript, and Tailwind CSS. Designed to showcase frontend architecture expertise, platform migrations, and UI systems work.
+Personal portfolio, built as a static Astro site. The document is HTML (so search engines read the work, experience, and contact details without running JavaScript). Motion and smooth scrolling are layered on with CSS and a small Lenis script.
 
 ## Live Site
 
 **[https://vivekdogra2012.github.io/portfolio/](https://vivekdogra2012.github.io/portfolio/)**
 
-## Tech Stack
+## Tech stack
 
-- **React 19** with TypeScript
-- **Vite** for fast builds and development
-- **Tailwind CSS** (v4) for styling
-- **Framer Motion** for animations
-- **GitHub Pages** for hosting
+- **Astro** for static HTML, file-based routing, and the `/portfolio/` base path
+- **Tailwind CSS** (v4)
+- **Lenis** for smooth scrolling and anchor jumps
+- **Self-hosted Inter and JetBrains Mono**
+- **GitHub Pages**
 
-## Local Development
+SEO is in the document itself: title, description, canonical URL, Open Graph, Twitter cards, JSON-LD `Person`, `robots.txt`, and a generated sitemap.
 
-### Prerequisites
+## Local development
 
-- Node.js 20+ 
-- npm 10+
-
-### Getting Started
+Node.js 20+ and npm 10+.
 
 ```bash
-# Clone the repository
-git clone https://github.com/vivekdogra2012/portfolio.git
-cd portfolio
-
-# Install dependencies
 npm install
-
-# Start development server
 npm run dev
 ```
 
-The site will be available at `http://localhost:5173/portfolio/`
-
-### Available Scripts
+The site is at `http://localhost:4321/portfolio/`.
 
 | Command | Description |
 |---------|-------------|
-| `npm run dev` | Start development server with hot reload |
-| `npm run build` | Build for production (outputs to `dist/`) |
-| `npm run preview` | Preview production build locally |
-| `npm run lint` | Run linter |
+| `npm run dev` | Dev server |
+| `npm run build` | Typecheck and build to `dist/` |
+| `npm run preview` | Preview the production build |
+| `npm run lint` | `astro check` |
 
 ## Deployment
 
-The site automatically deploys to GitHub Pages when changes are pushed to `main`. The deployment workflow:
+Pushes to `main` build with `npm run build` and upload `dist/` to GitHub Pages.
 
-1. Builds the project with `npm run build`
-2. Uploads the `dist/` folder as a Pages artifact
-3. Deploys to GitHub Pages
-
-To deploy manually, push to `main` or trigger the workflow from the Actions tab.
-
-## Project Structure
+## Project structure
 
 ```
 src/
-├── components/     # React components
-│   ├── Nav.tsx           # Sticky navigation
-│   ├── Hero.tsx          # Hero section with staggered animations
-│   ├── Skills.tsx        # Skills grouped by architect lenses
-│   ├── Work.tsx          # Selected work case cards
-│   ├── Architecture.tsx  # Architecture belief cards
-│   ├── About.tsx         # About section
-│   ├── Contact.tsx       # Contact CTAs
-│   ├── Footer.tsx        # Footer
-│   └── FadeUp.tsx        # Reusable fade-up animation wrapper
-├── hooks/
-│   └── useInView.ts      # IntersectionObserver hook
-├── App.tsx               # Main app component
-├── main.tsx              # Entry point
-└── index.css             # Tailwind imports and custom theme
+├── components/     # Astro sections (static HTML)
+├── data/site.ts    # Profile, roles, expertise, stack
+├── layouts/        # Document shell, meta, JSON-LD
+├── pages/          # index and 404
+├── scripts/site.ts # Lenis, nav, cursor, accordions
+└── styles/         # Tailwind theme and motion
+public/             # Headshot, favicon, robots.txt
 ```
-
-## Design
-
-- **Theme**: Dark architect studio palette
-- **Colors**: `#0B0F14` background, `#5B8CFF` accent, `#3DDC97` secondary accent
-- **Typography**: Inter for body, JetBrains Mono for code/eyebrows
-- **Animations**: Subtle fade-up reveals with `cubic-bezier(0.22, 1, 0.36, 1)` easing, respects `prefers-reduced-motion`
-
-## License
-
-© Vivek Dogra
-

@@ -1,0 +1,37 @@
+---
+import About from '../components/About.astro'
+import Contact from '../components/Contact.astro'
+import Experience from '../components/Experience.astro'
+import Expertise from '../components/Expertise.astro'
+import Footer from '../components/Footer.astro'
+import Hero from '../components/Hero.astro'
+import Nav from '../components/Nav.astro'
+import SiteBackground from '../components/SiteBackground.astro'
+import Stack from '../components/Stack.astro'
+import Thinking from '../components/Thinking.astro'
+import Work from '../components/Work.astro'
+import Base from '../layouts/Base.astro'
+---
+
+<Base>
+  <div class="intro fixed inset-0 z-[90] items-end bg-[var(--color-bg)]" aria-hidden="true">
+    <span class="intro-line block h-px w-full origin-left bg-[var(--color-accent)]"></span>
+  </div>
+  <p class="intro-name eyebrow" aria-hidden="true"><span>Vivek Dogra</span></p>
+  <a href="#top" class="skip-link">Skip to content</a>
+  <SiteBackground />
+  <div class="relative z-10">
+    <Nav />
+    <main>
+      <Hero />
+      <About />
+      <Work />
+      <Experience />
+      <Expertise />
+      <Stack />
+      <Thinking />
+      <Contact />
+    </main>
+    <Footer />
+  </div>
+</Base>

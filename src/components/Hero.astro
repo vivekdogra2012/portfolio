@@ -1,0 +1,42 @@
+---
+const lines = ['I build', 'digital', 'experiences', 'that scale.']
+---
+
+<section id="top" class="relative flex flex-col pt-24 pb-16 md:min-h-[100svh] md:justify-center md:pt-28">
+  <div class="hero-shift shell">
+    <p class="hero-eyebrow eyebrow">Frontend Architect / Senior Engineer</p>
+    <h1 class="display mt-6">
+      {
+        lines.map((line, index) => (
+          <span class="line-mask block" style={`--i:${index}`}>
+            <span class={index === 2 ? 'text-outline' : ''}>{line}</span>
+          </span>
+        ))
+      }
+    </h1>
+    <div class="hero-meta mt-10 grid items-end gap-8 md:mt-14 md:grid-cols-12">
+      <p class="max-w-md text-base text-[var(--color-muted)] md:col-span-5 md:text-lg">
+        Senior frontend engineer focused on React, Next.js, Astro, React Native, and scalable frontend architecture.
+      </p>
+      <div class="flex flex-wrap items-center gap-6 md:col-span-4">
+        <a class="btn-solid" href="#work">View my work</a>
+        <a class="btn-quiet" href="#contact">
+          Let’s connect
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true">
+            <path d="M5 12h14M13 6l6 6-6 6"></path>
+          </svg>
+        </a>
+      </div>
+      <p class="font-mono text-[0.68rem] leading-6 tracking-[0.16em] text-[var(--color-faint)] uppercase md:col-span-3 md:text-right">
+        Gurgaon / Delhi NCR
+        <span class="mt-1 block">8+ years · Architect-1</span>
+        <span class="mt-1 block">Infinity Learn</span>
+      </p>
+    </div>
+    <div class="mt-12 hidden items-center gap-4 text-[var(--color-faint)] md:flex" aria-hidden="true">
+      <span class="scroll-cue-rule h-px w-10 bg-white/40"></span>
+      <span class="font-mono text-[0.65rem] tracking-[0.28em] uppercase">Scroll</span>
+      <span class="scroll-cue-line block h-8 w-px bg-white/40"></span>
+    </div>
+  </div>
+</section>

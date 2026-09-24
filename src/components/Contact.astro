@@ -1,0 +1,50 @@
+---
+import { profile } from '../data/site'
+
+const lines = ['Let’s build', 'something', 'that scales.']
+const channels = [
+  { label: 'Email', value: profile.email, href: `mailto:${profile.email}` },
+  { label: 'LinkedIn', value: 'vivek-dogra', href: profile.linkedin },
+  { label: 'GitHub', value: 'vivekdogra2012', href: profile.github },
+]
+---
+
+<section id="contact" class="section-space scroll-mt-24">
+  <div class="shell">
+    <p class="reveal eyebrow">07 / Contact</p>
+    <h2 class="mt-6 text-5xl font-semibold tracking-tight sm:text-7xl md:text-8xl md:leading-[0.95]">
+      {
+        lines.map((line, index) => (
+          <span class="view-line block overflow-hidden pt-[0.04em] pb-[0.14em]" style={`--i:${index}`}>
+            <span class={index === 2 ? 'text-outline' : ''}>{line}</span>
+          </span>
+        ))
+      }
+    </h2>
+    <div class="mt-12 grid gap-10 border-t border-[var(--color-line)] pt-10 md:grid-cols-12">
+      <p class="text-[var(--color-muted)] md:col-span-5">{profile.availability}</p>
+      <ul class="md:col-span-7">
+        {
+          channels.map((channel) => (
+            <li class="border-b border-[var(--color-line)]">
+              <a
+                href={channel.href}
+                class="group flex items-center justify-between gap-6 py-5 transition-colors hover:text-[var(--color-accent)]"
+                {...(channel.href.startsWith('http') ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+              >
+                <span>
+                  <span class="block font-mono text-[0.65rem] tracking-[0.18em] text-[var(--color-faint)] uppercase">{channel.label}</span>
+                  <span class="mt-1 block text-xl tracking-tight md:text-2xl">{channel.value}</span>
+                </span>
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="shrink-0 transition group-hover:translate-x-1 group-hover:-translate-y-1" aria-hidden="true">
+                  <path d="M7 17 17 7M8 7h9v9"></path>
+                </svg>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+    <a class="btn-solid mt-12" href={`mailto:${profile.email}`}>Get in touch</a>
+  </div>
+</section>
