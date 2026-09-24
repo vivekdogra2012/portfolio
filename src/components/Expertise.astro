@@ -1,0 +1,37 @@
+---
+import { expertise } from '../data/site'
+---
+
+<section id="expertise" class="section-space scroll-mt-24">
+  <div class="shell">
+    <div class="reveal">
+      <p class="eyebrow">04 / Expertise</p>
+      <h2 class="mt-4 text-4xl font-semibold tracking-tight sm:text-6xl md:text-7xl">What I build.</h2>
+    </div>
+    <div class="mt-12 border-t border-[var(--color-line)] md:mt-16">
+      {
+        expertise.map((item, index) => (
+          <button
+            type="button"
+            class:list={['expertise-row group relative block w-full border-b border-[var(--color-line)] py-6 text-left md:py-8', index === 0 && 'is-active']}
+            data-expertise
+          >
+            <span
+              class="expertise-ghost pointer-events-none absolute top-1/2 right-0 font-semibold tracking-tight text-white/[0.045]"
+              style="font-size: clamp(4rem, 8vw, 7rem)"
+              aria-hidden="true"
+            >
+              {item.index}
+            </span>
+            <span class="relative grid items-baseline gap-3 md:grid-cols-12">
+              <span class="font-mono text-[0.68rem] tracking-[0.18em] text-[var(--color-accent)] md:col-span-1">{item.index}</span>
+              <span class="text-2xl font-semibold tracking-tight md:col-span-5 md:text-4xl">{item.title}</span>
+              <span class="expertise-detail text-sm text-[var(--color-muted)] md:col-span-6 md:text-base">{item.detail}</span>
+            </span>
+            <span class="expertise-line absolute bottom-0 left-0 h-px bg-[var(--color-accent)]"></span>
+          </button>
+        ))
+      }
+    </div>
+  </div>
+</section>

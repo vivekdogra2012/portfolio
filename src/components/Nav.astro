@@ -1,0 +1,64 @@
+---
+const links = [
+  { href: '#work', label: 'Work' },
+  { href: '#experience', label: 'Experience' },
+  { href: '#expertise', label: 'Expertise' },
+  { href: '#about', label: 'About' },
+  { href: '#contact', label: 'Contact' },
+]
+---
+
+<div class="cursor" data-cursor hidden>
+  <span class="cursor-dot" data-cursor-dot></span>
+</div>
+
+<header data-header class="site-header fixed inset-x-0 top-0 z-50">
+  <div class="scroll-progress" data-progress aria-hidden="true"></div>
+  <div class="shell flex h-16 items-center justify-between md:h-[4.5rem]">
+    <a href="#top" class="text-[0.78rem] font-semibold tracking-[0.18em]">VIVEK DOGRA</a>
+    <nav class="hidden items-center gap-7 lg:flex" aria-label="Primary">
+      {
+        links.map((link) => (
+          <a href={link.href} class="nav-link text-[0.72rem] font-medium tracking-[0.16em] uppercase">
+            {link.label}
+          </a>
+        ))
+      }
+    </nav>
+    <a href="#contact" class="btn-quiet hidden lg:inline-flex">
+      Let’s talk
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true">
+        <path d="M5 12h14M13 6l6 6-6 6"></path>
+      </svg>
+    </a>
+    <button
+      type="button"
+      class="inline-flex h-10 w-10 items-center justify-center lg:hidden"
+      data-nav-toggle
+      aria-expanded="false"
+      aria-controls="mobile-nav"
+      aria-label="Open menu"
+    >
+      <span class="relative block h-3 w-5">
+        <span data-bar="top" class="absolute top-0 left-0 h-px w-5 bg-white transition"></span>
+        <span data-bar="mid" class="absolute top-1.5 left-0 h-px w-5 bg-white transition"></span>
+        <span data-bar="bot" class="absolute top-3 left-0 h-px w-5 bg-white transition"></span>
+      </span>
+    </button>
+  </div>
+</header>
+
+<nav id="mobile-nav" data-nav-panel class="nav-panel fixed inset-0 z-40 flex-col justify-end bg-[var(--color-bg)] px-6 pt-24 pb-16 lg:hidden" aria-label="Mobile">
+  <ul class="space-y-2">
+    {
+      links.map((link) => (
+        <li>
+          <a href={link.href} class="block py-2 text-4xl font-semibold tracking-tight" data-nav-link>
+            {link.label}
+          </a>
+        </li>
+      ))
+    }
+  </ul>
+  <a href="mailto:vivekdogra2012@gmail.com" class="mt-10 text-sm text-[var(--color-muted)]" data-nav-link>vivekdogra2012@gmail.com</a>
+</nav>

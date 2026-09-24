@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://vivekdogra2012.github.io/portfolio/sitemap-index.xml

@@ -1,0 +1,48 @@
+---
+import { roles } from '../data/site'
+---
+
+<section id="experience" class="section-space scroll-mt-24">
+  <div class="shell">
+    <div class="reveal mb-14 flex flex-col gap-4 md:mb-20 md:flex-row md:items-end md:justify-between">
+      <div>
+        <p class="eyebrow">03 / Experience</p>
+        <h2 class="mt-4 text-4xl font-semibold tracking-tight sm:text-6xl">The arc.</h2>
+      </div>
+      <p class="max-w-sm text-[var(--color-muted)]">
+        Three companies. One through-line: consumer products, and the frontend systems behind them.
+      </p>
+    </div>
+    <div class="relative border-t border-[var(--color-line)] md:pl-8">
+      <span class="timeline-line absolute top-0 bottom-0 left-0 hidden w-px bg-[var(--color-accent)] md:block" aria-hidden="true"></span>
+      {
+        roles.map((role, index) => (
+          <div class="exp border-b border-[var(--color-line)]" data-exp data-open={index === 0 ? 'true' : 'false'}>
+            <button
+              type="button"
+              class="grid w-full grid-cols-1 gap-2 py-6 text-left md:grid-cols-12 md:items-baseline md:gap-6 md:py-8"
+              aria-expanded={index === 0 ? 'true' : 'false'}
+            >
+              <span class="font-mono text-[0.68rem] tracking-[0.16em] text-[var(--color-accent)] md:col-span-2">{role.period}</span>
+              <span class="text-2xl font-semibold tracking-tight md:col-span-4 md:text-3xl">{role.company}</span>
+              <span class="text-[var(--color-muted)] md:col-span-4">{role.role}</span>
+              <span class="exp-plus hidden text-right text-[var(--color-faint)] md:col-span-2 md:inline-block">+</span>
+            </button>
+            <div class="exp-body">
+              <div>
+                <div class="grid gap-6 pb-8 md:grid-cols-12">
+                  <p class="text-[var(--color-muted)] md:col-span-6 md:col-start-3">{role.description}</p>
+                  <ul class="space-y-2 md:col-span-4">
+                    {role.highlights.slice(0, 3).map((item) => (
+                      <li class="text-sm text-[var(--color-muted)]">{item}</li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</section>

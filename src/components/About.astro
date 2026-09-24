@@ -1,0 +1,37 @@
+---
+import { about } from '../data/site'
+
+const portrait = `${import.meta.env.BASE_URL}vivek-dogra-suit.jpg`
+---
+
+<section id="about" class="section-space scroll-mt-24">
+  <div class="shell">
+    <div class="grid items-end gap-10 lg:grid-cols-12">
+      <p class="reveal eyebrow lg:col-span-3">01 / About</p>
+      <h2 class="reveal max-w-[16ch] text-4xl font-semibold tracking-tight text-balance sm:text-5xl md:text-6xl md:leading-[1.05] lg:col-span-9">
+        {about.statement}
+      </h2>
+    </div>
+    <div class="mt-16 grid items-start gap-12 lg:mt-24 lg:grid-cols-12">
+      <div class="reveal lg:col-span-5">
+        <div class="portrait-wipe relative aspect-[4/5] overflow-hidden border border-[var(--color-line)]">
+          <img
+            src={portrait}
+            alt="Vivek Dogra"
+            width="1000"
+            height="1000"
+            class="portrait-photo h-full w-full object-cover object-top"
+            loading="lazy"
+            decoding="async"
+          />
+        </div>
+        <p class="mt-4 font-mono text-[0.68rem] tracking-[0.18em] text-[var(--color-faint)] uppercase">
+          Gurgaon / Delhi NCR · 8+ years
+        </p>
+      </div>
+      <div class="space-y-6 lg:col-span-6 lg:col-start-7 lg:pt-6">
+        {about.paragraphs.map((paragraph) => <p class="reveal text-base leading-relaxed text-[var(--color-muted)] md:text-lg">{paragraph}</p>)}
+      </div>
+    </div>
+  </div>
+</section>

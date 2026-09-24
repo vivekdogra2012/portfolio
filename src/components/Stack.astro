@@ -1,0 +1,26 @@
+---
+import { stack } from '../data/site'
+---
+
+<section id="stack" class="section-space scroll-mt-24">
+  <div class="shell">
+    <div class="reveal flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
+      <div>
+        <p class="eyebrow">05 / The stack</p>
+        <h2 class="mt-4 text-4xl font-semibold tracking-tight sm:text-6xl">Tools I actually ship with.</h2>
+      </div>
+      <p data-stack-label class="font-mono text-[0.72rem] tracking-[0.18em] text-[var(--color-accent)] uppercase md:text-right">
+        Hover a technology
+      </p>
+    </div>
+    <div class="mt-12 flex flex-wrap gap-x-6 gap-y-2 md:mt-16">
+      {
+        stack.map((item) => (
+          <button type="button" class="stack-word px-1 py-1 text-3xl font-semibold tracking-tight text-[var(--color-muted)] sm:text-5xl" data-group={item.group}>
+            {item.name}
+          </button>
+        ))
+      }
+    </div>
+  </div>
+</section>

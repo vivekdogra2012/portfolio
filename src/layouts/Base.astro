@@ -1,0 +1,100 @@
+---
+import '../styles/global.css'
+import { profile } from '../data/site'
+
+interface Props {
+  title?: string
+  description?: string
+  robots?: string
+  canonical?: string
+}
+
+const {
+  title = 'Vivek Dogra — Frontend Architect',
+  description = 'Vivek Dogra is a Frontend Architect and senior frontend engineer with 8+ years building consumer-scale products in React, Next.js, TypeScript, and React Native.',
+  robots = 'index, follow',
+  canonical = 'https://vivekdogra2012.github.io/portfolio/',
+} = Astro.props
+
+const siteUrl = canonical
+const image = `${siteUrl}vivek-dogra-suit.jpg`
+const base = import.meta.env.BASE_URL
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  name: profile.name,
+  jobTitle: profile.title,
+  url: siteUrl,
+  email: `mailto:${profile.email}`,
+  image,
+  address: {
+    '@type': 'PostalAddress',
+    addressLocality: 'Gurgaon',
+    addressRegion: 'Delhi NCR',
+    addressCountry: 'IN',
+  },
+  sameAs: [profile.linkedin, profile.github],
+  knowsAbout: ['React', 'Next.js', 'TypeScript', 'React Native', 'Frontend architecture', 'Design systems'],
+}
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta name="author" content={profile.name} />
+    <meta
+      name="keywords"
+      content="Frontend Architect, Staff Frontend Engineer, React, Next.js, TypeScript, React Native, Platform Migration, Design Systems, UI Architecture"
+    />
+    <meta name="theme-color" content="#070708" />
+    <meta name="robots" content={robots} />
+    {robots.startsWith('index') && <link rel="canonical" href={canonical} />}
+    <link rel="icon" type="image/svg+xml" href={`${base}favicon.svg`} />
+
+    <meta property="og:title" content={title} />
+    <meta
+      property="og:description"
+      content="Staff-level Frontend Architect with 8+ years in React, Next.js, TypeScript, and React Native. Platforms, migrations, and UI systems that scale."
+    />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={siteUrl} />
+    <meta property="og:image" content={image} />
+    <meta property="og:image:alt" content="Vivek Dogra in a grey suit" />
+    <meta property="og:locale" content="en_IN" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta
+      name="twitter:description"
+      content="Staff-level Frontend Architect with 8+ years in React, Next.js, TypeScript, and React Native."
+    />
+    <meta name="twitter:image" content={image} />
+    <meta name="twitter:image:alt" content="Vivek Dogra in a grey suit" />
+
+    <script is:inline>
+      (function () {
+        try {
+          if (matchMedia('(prefers-reduced-motion: reduce)').matches) return
+          if (location.hash) return
+          if (sessionStorage.getItem('vd-intro') === '1') return
+          document.documentElement.classList.add('play-intro', 'booting')
+          setTimeout(function () {
+            document.documentElement.classList.remove('booting')
+          }, 2800)
+        } catch (e) {}
+      })()
+    </script>
+    <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+  </head>
+  <body>
+    <slot />
+    <script>
+      import '../scripts/site'
+    </script>
+  </body>
+</html>
