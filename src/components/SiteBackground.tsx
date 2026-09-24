@@ -31,8 +31,10 @@ export function SiteBackground() {
             'radial-gradient(ellipse 42% 36% at 72% 18%, rgba(139,92,246,0.18), transparent 68%), radial-gradient(ellipse 36% 32% at 18% 86%, rgba(70,70,110,0.16), transparent 70%)',
         }}
       />
+      <div className="orb-drift pointer-events-none absolute top-[18%] right-[8%] h-[42vh] w-[42vh] rounded-full bg-[radial-gradient(circle,rgba(139,92,246,0.22),transparent_68%)]" />
+      <div className="orb-drift-alt pointer-events-none absolute bottom-[8%] left-[6%] h-[34vh] w-[34vh] rounded-full bg-[radial-gradient(circle,rgba(139,92,246,0.12),transparent_70%)]" />
       <div
-        className="absolute inset-0 opacity-60"
+        className="grid-drift absolute inset-0 opacity-60"
         style={{
           backgroundImage:
             'linear-gradient(to right, rgba(255,255,255,0.045) 1px, transparent 1px), linear-gradient(to bottom, rgba(255,255,255,0.045) 1px, transparent 1px)',

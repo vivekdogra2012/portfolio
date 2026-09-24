@@ -1,10 +1,16 @@
-import { useState } from 'react'
-import { AnimatePresence, motion } from 'framer-motion'
+import { useRef, useState } from 'react'
+import { AnimatePresence, motion, useTransform } from 'framer-motion'
 import { roles } from '../content'
+import { useLeaveProgress } from '../hooks/useLeaveProgress'
 import { Reveal } from './Reveal'
+import { useReducedMotion } from '../hooks/useReducedMotion'
 
 export function Experience() {
   const [active, setActive] = useState(0)
+  const reduced = useReducedMotion()
+  const listRef = useRef<HTMLDivElement>(null)
+  const progress = useLeaveProgress(listRef)
+  const scaleY = useTransform(progress, [0.02, 0.92], [0, 1])
 
   return (
     <section id="experience" className="section-space scroll-mt-24">
@@ -19,11 +25,23 @@ export function Experience() {
           </p>
         </Reveal>
 
-        <div className="border-t border-[var(--color-line)]">
+        <div ref={listRef} className="relative border-t border-[var(--color-line)] md:pl-8">
+          <motion.span
+            className="absolute top-0 bottom-0 left-0 hidden w-px origin-top bg-[var(--color-accent)] md:block"
+            style={{ scaleY: reduced ? 1 : scaleY }}
+            aria-hidden
+          />
           {roles.map((role, index) => {
             const open = active === index
             return (
-              <div key={role.company} className="border-b border-[var(--color-line)]">
+              <motion.div
+                key={role.company}
+                className="border-b border-[var(--color-line)]"
+                initial={reduced ? false : { opacity: 0, y: 18 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: '-8% 0px' }}
+                transition={{ duration: 0.55, delay: index * 0.06, ease: [0.22, 1, 0.36, 1] }}
+              >
                 <button
                   type="button"
                   className="grid w-full grid-cols-1 gap-2 py-6 text-left md:grid-cols-12 md:items-baseline md:gap-6 md:py-8"
@@ -38,9 +56,13 @@ export function Experience() {
                   </span>
                   <span className="text-2xl font-semibold tracking-tight md:col-span-4 md:text-3xl">{role.company}</span>
                   <span className="text-[var(--color-muted)] md:col-span-4">{role.role}</span>
-                  <span className="hidden text-right text-[var(--color-faint)] md:col-span-2 md:block">
-                    {open ? '—' : '+'}
-                  </span>
+                  <motion.span
+                    className="hidden origin-center text-right text-[var(--color-faint)] md:col-span-2 md:inline-block"
+                    animate={{ rotate: open ? 45 : 0 }}
+                    transition={{ duration: 0.28 }}
+                  >
+                    +
+                  </motion.span>
                 </button>
                 <AnimatePresence initial={false}>
                   {open && (
@@ -65,7 +87,7 @@ export function Experience() {
                     </motion.div>
                   )}
                 </AnimatePresence>
-              </div>
+              </motion.div>
             )
           })}
         </div>

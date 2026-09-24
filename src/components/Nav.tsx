@@ -1,6 +1,8 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import { profile } from '../content'
+import { usePageProgress } from '../hooks/useLeaveProgress'
+import { useReducedMotion } from '../hooks/useReducedMotion'
 
 const links = [
   { href: '#work', label: 'Work' },
@@ -12,14 +14,36 @@ const links = [
 
 export function Nav() {
   const [scrolled, setScrolled] = useState(false)
+  const [hidden, setHidden] = useState(false)
   const [open, setOpen] = useState(false)
+  const reduced = useReducedMotion()
+  const page = usePageProgress()
+
+  const revealLock = useRef(0)
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 24)
+    const show = () => {
+      revealLock.current = performance.now() + 1400
+      setHidden(false)
+    }
+    window.addEventListener('anchor-scroll', show)
+    return () => window.removeEventListener('anchor-scroll', show)
+  }, [])
+
+  useEffect(() => {
+    let last = window.scrollY
+    const onScroll = () => {
+      const y = window.scrollY
+      setScrolled(y > 24)
+      if (open || y < 80 || performance.now() < revealLock.current) setHidden(false)
+      else if (y > last + 8) setHidden(true)
+      else if (y < last - 8) setHidden(false)
+      last = y
+    }
     onScroll()
     window.addEventListener('scroll', onScroll, { passive: true })
     return () => window.removeEventListener('scroll', onScroll)
-  }, [])
+  }, [open])
 
   useEffect(() => {
     if (!open) return
@@ -36,11 +60,18 @@ export function Nav() {
 
   return (
     <>
-      <header
-        className={`fixed inset-x-0 top-0 z-50 transition-colors duration-300 ${
+      <motion.header
+        className={`fixed inset-x-0 top-0 z-50 ${
           scrolled || open ? 'bg-[var(--color-bg)]/80 backdrop-blur-xl' : 'bg-transparent'
         }`}
+        animate={{ y: hidden && !open ? '-100%' : '0%' }}
+        transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
       >
+        <motion.div
+          className="absolute inset-x-0 top-0 h-px origin-left bg-[var(--color-accent)]"
+          style={{ scaleX: reduced ? 0 : page }}
+          aria-hidden
+        />
         <div className="shell flex h-16 items-center justify-between md:h-[4.5rem]">
           <a href="#top" className="text-[0.78rem] font-semibold tracking-[0.18em]">
             VIVEK DOGRA
@@ -51,7 +82,7 @@ export function Nav() {
               <a
                 key={link.href}
                 href={link.href}
-                className="text-[0.72rem] font-medium tracking-[0.16em] text-[var(--color-muted)] uppercase transition-colors hover:text-[var(--color-text)]"
+                className="nav-link text-[0.72rem] font-medium tracking-[0.16em] text-[var(--color-muted)] uppercase"
               >
                 {link.label}
               </a>
@@ -78,7 +109,7 @@ export function Nav() {
             </span>
           </button>
         </div>
-      </header>
+      </motion.header>
 
       <AnimatePresence>
         {open && (
@@ -94,9 +125,9 @@ export function Nav() {
               {links.map((link, index) => (
                 <motion.li
                   key={link.href}
-                  initial={{ opacity: 0, y: 16 }}
+                  initial={{ opacity: 0, y: 28 }}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.05 * index }}
+                  transition={{ delay: 0.06 + 0.05 * index, duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
                 >
                   <a
                     href={link.href}

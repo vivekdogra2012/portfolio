@@ -26,8 +26,13 @@ export function Expertise() {
                 onClick={() => setActive(index)}
               >
                 <span
-                  className="pointer-events-none absolute top-1/2 right-0 -translate-y-1/2 font-semibold tracking-tight text-white/[0.04] transition-opacity duration-300"
-                  style={{ fontSize: 'clamp(4rem, 8vw, 7rem)', opacity: open ? 1 : 0 }}
+                  className="pointer-events-none absolute top-1/2 right-0 font-semibold tracking-tight text-white/[0.045]"
+                  style={{
+                    fontSize: 'clamp(4rem, 8vw, 7rem)',
+                    opacity: open ? 1 : 0,
+                    transform: `translateY(-50%) scale(${open ? 1 : 0.9})`,
+                    transition: 'opacity 420ms ease, transform 620ms cubic-bezier(0.22, 1, 0.36, 1)',
+                  }}
                   aria-hidden
                 >
                   {item.index}

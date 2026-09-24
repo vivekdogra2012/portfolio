@@ -1,7 +1,15 @@
+import { motion } from 'framer-motion'
 import { about } from '../content'
+import { useInView } from '../hooks/useInView'
 import { Reveal } from './Reveal'
+import { useReducedMotion } from '../hooks/useReducedMotion'
+import { easeOut } from '../motion'
 
 export function About() {
+  const reduced = useReducedMotion()
+  const [photoRef, seen] = useInView<HTMLDivElement>({ threshold: 0.2 })
+  const play = seen && !reduced
+
   return (
     <section id="about" className="section-space scroll-mt-24">
       <div className="shell">
@@ -18,13 +26,23 @@ export function About() {
 
         <div className="mt-16 grid items-start gap-12 lg:mt-24 lg:grid-cols-12">
           <Reveal className="lg:col-span-5">
-            <div className="relative aspect-[4/5] overflow-hidden border border-[var(--color-line)]">
-              <img
-                src={`${import.meta.env.BASE_URL}vivek-dogra-suit.jpg`}
-                alt="Vivek Dogra"
-                className="h-full w-full object-cover object-top"
-                loading="lazy"
-              />
+            <div ref={photoRef} className="relative aspect-[4/5] overflow-hidden border border-[var(--color-line)]">
+              <motion.div
+                className="h-full w-full"
+                initial={reduced ? false : { clipPath: 'inset(100% 0% 0% 0%)' }}
+                animate={play || reduced ? { clipPath: 'inset(0% 0% 0% 0%)' } : undefined}
+                transition={{ duration: 1.15, ease: easeOut }}
+              >
+                <motion.img
+                  src={`${import.meta.env.BASE_URL}vivek-dogra-suit.jpg`}
+                  alt="Vivek Dogra"
+                  className="h-full w-full object-cover object-top"
+                  loading="lazy"
+                  initial={reduced ? false : { scale: 1.12 }}
+                  animate={play || reduced ? { scale: 1 } : undefined}
+                  transition={{ duration: 1.35, ease: easeOut }}
+                />
+              </motion.div>
             </div>
             <p className="mt-4 font-mono text-[0.68rem] tracking-[0.18em] text-[var(--color-faint)] uppercase">
               Gurgaon / Delhi NCR · 8+ years

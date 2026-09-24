@@ -1,44 +1,40 @@
-import { useEffect, useRef } from 'react'
+import { useEffect } from 'react'
 import Lenis from 'lenis'
 import { useReducedMotion } from './useReducedMotion'
 
 let lenisInstance: Lenis | null = null
 
 export function useLenis() {
-  const rafId = useRef<number | null>(null)
   const reducedMotion = useReducedMotion()
 
   useEffect(() => {
     if (reducedMotion) {
-      if (lenisInstance) {
-        lenisInstance.destroy()
-        lenisInstance = null
-      }
+      lenisInstance?.destroy()
+      lenisInstance = null
       return
     }
 
-    if (lenisInstance) return
-
-    lenisInstance = new Lenis({
-      duration: 1.2,
+    const lenis = new Lenis({
+      duration: 1.15,
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       orientation: 'vertical',
       gestureOrientation: 'vertical',
       smoothWheel: true,
-      touchMultiplier: 2,
+      touchMultiplier: 1.4,
     })
+    lenisInstance = lenis
 
-    function raf(time: number) {
-      lenisInstance?.raf(time)
-      rafId.current = requestAnimationFrame(raf)
+    let frame = 0
+    const raf = (time: number) => {
+      lenis.raf(time)
+      frame = requestAnimationFrame(raf)
     }
-
-    rafId.current = requestAnimationFrame(raf)
+    frame = requestAnimationFrame(raf)
 
     return () => {
-      if (rafId.current) {
-        cancelAnimationFrame(rafId.current)
-      }
+      cancelAnimationFrame(frame)
+      lenis.destroy()
+      if (lenisInstance === lenis) lenisInstance = null
     }
   }, [reducedMotion])
 
