@@ -1,5 +1,9 @@
+import { motion } from 'framer-motion'
 import { profile } from '../content'
 import { Reveal } from './Reveal'
+import { useReducedMotion } from '../hooks/useReducedMotion'
+
+const ease = [0.22, 1, 0.36, 1] as const
 
 const channels = [
   { label: 'Email', value: profile.email, href: `mailto:${profile.email}` },
@@ -8,26 +12,45 @@ const channels = [
 ]
 
 export function Contact() {
+  const reduced = useReducedMotion()
+
   return (
     <section id="contact" className="section-space scroll-mt-24">
       <div className="shell">
         <Reveal>
           <p className="eyebrow">07 / Contact</p>
           <h2 className="mt-6 text-5xl font-semibold tracking-tight sm:text-7xl md:text-8xl md:leading-[0.95]">
-            Let’s build
-            <span className="block">something</span>
-            <span className="block text-outline">that scales.</span>
+            {['Let’s build', 'something', 'that scales.'].map((line, index) => (
+              <span key={line} className="block overflow-hidden pb-[0.14em] pt-[0.04em]">
+                <motion.span
+                  className={`block ${index === 2 ? 'text-outline' : ''}`}
+                  initial={reduced ? false : { y: '110%' }}
+                  whileInView={{ y: '0%' }}
+                  viewport={{ once: true, margin: '-10% 0px' }}
+                  transition={{ duration: 0.9, delay: index * 0.08, ease }}
+                >
+                  {line}
+                </motion.span>
+              </span>
+            ))}
           </h2>
         </Reveal>
 
         <div className="mt-12 grid gap-10 border-t border-[var(--color-line)] pt-10 md:grid-cols-12">
           <p className="text-[var(--color-muted)] md:col-span-5">{profile.availability}</p>
           <ul className="md:col-span-7">
-            {channels.map((channel) => (
-              <li key={channel.label} className="border-b border-[var(--color-line)]">
+            {channels.map((channel, index) => (
+              <motion.li
+                key={channel.label}
+                className="border-b border-[var(--color-line)]"
+                initial={reduced ? false : { opacity: 0, x: 28 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true, margin: '-8% 0px' }}
+                transition={{ duration: 0.55, delay: index * 0.08, ease }}
+              >
                 <a
                   href={channel.href}
-                  className="group flex items-center justify-between gap-6 py-5"
+                  className="group flex items-center justify-between gap-6 py-5 transition-colors hover:text-[var(--color-accent)]"
                   {...(channel.href.startsWith('http') ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
                 >
                   <span>
@@ -40,7 +63,7 @@ export function Contact() {
                     <path d="M7 17 17 7M8 7h9v9" />
                   </svg>
                 </a>
-              </li>
+              </motion.li>
             ))}
           </ul>
         </div>

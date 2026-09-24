@@ -1,11 +1,12 @@
 import { profile } from '../content'
+import { Reveal } from './Reveal'
 
 export function Footer() {
   const year = new Date().getFullYear()
 
   return (
     <footer className="border-t border-[var(--color-line)]">
-      <div className="shell flex flex-col gap-8 py-10 md:flex-row md:items-end md:justify-between">
+      <Reveal className="shell flex flex-col gap-8 py-10 md:flex-row md:items-end md:justify-between">
         <div>
           <p className="text-sm font-semibold tracking-[0.16em]">VIVEK DOGRA</p>
           <p className="mt-1 text-sm text-[var(--color-muted)]">{profile.title}</p>
@@ -25,7 +26,7 @@ export function Footer() {
           <p>© {year} Vivek Dogra</p>
           <p className="mt-1">Designed & engineered with curiosity.</p>
         </div>
-      </div>
+      </Reveal>
     </footer>
   )
 }

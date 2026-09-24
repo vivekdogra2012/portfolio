@@ -29,6 +29,19 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
     
     <meta name="theme-color" content="#070708" />
+    <script>
+      (function () {
+        try {
+          if (matchMedia('(prefers-reduced-motion: reduce)').matches) return
+          if (location.hash) return
+          if (sessionStorage.getItem('vd-intro') === '1') return
+          document.documentElement.classList.add('booting')
+          setTimeout(function () {
+            document.documentElement.classList.remove('booting')
+          }, 2800)
+        } catch (e) {}
+      })()
+    </script>
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
