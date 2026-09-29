@@ -21,6 +21,7 @@ export function ChatScreen() {
     newChat,
     send,
     focusTick,
+    routeReady,
   } = useChat();
   const [draft, setDraft] = useState("");
   const [menuOpen, setMenuOpen] = useState(false);
@@ -116,7 +117,7 @@ export function ChatScreen() {
         </div>
       </header>
 
-      {!hydrated ? (
+      {!hydrated || !routeReady ? (
         <div className="flex flex-1 items-center justify-center text-sm text-muted">Loading chats…</div>
       ) : missing ? (
         <div className="flex flex-1 flex-col items-center justify-center gap-3 px-4 text-center">

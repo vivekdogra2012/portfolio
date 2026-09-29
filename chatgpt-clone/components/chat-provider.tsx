@@ -41,6 +41,7 @@ type ChatContextValue = {
   setModel: (id: string) => void;
   desktopOpen: boolean;
   drawerOpen: boolean;
+  routeReady: boolean;
   toggleDesktop: () => void;
   openDrawer: () => void;
   closeDrawer: () => void;
@@ -62,6 +63,7 @@ export function ChatProvider({ children }: { children: ReactNode }) {
   const [conversations, setConversations] = useState<Conversation[]>([]);
   const [activeId, setActiveId] = useState<string | null>(null);
   const [hydrated, setHydrated] = useState(false);
+  const [routeReady, setRouteReady] = useState(false);
   const [streaming, setStreaming] = useState<Streaming | null>(null);
   const [model, setModelState] = useState("gpt-prototype");
   const [models, setModels] = useState<ModelInfo[]>([
@@ -101,6 +103,7 @@ export function ChatProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     if (!hydrated) return;
     setActiveId(urlId);
+    setRouteReady(true);
   }, [hydrated, urlId]);
 
   useEffect(() => {
@@ -442,6 +445,7 @@ export function ChatProvider({ children }: { children: ReactNode }) {
       setModel,
       desktopOpen,
       drawerOpen,
+      routeReady,
       toggleDesktop,
       openDrawer,
       closeDrawer,
@@ -465,6 +469,7 @@ export function ChatProvider({ children }: { children: ReactNode }) {
       setModel,
       desktopOpen,
       drawerOpen,
+      routeReady,
       toggleDesktop,
       openDrawer,
       closeDrawer,
